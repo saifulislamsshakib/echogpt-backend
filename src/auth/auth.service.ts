@@ -47,6 +47,14 @@ export class AuthService {
         createdAt: true,
       },
     });
+    await this.prisma.subscription.create({
+      data: {
+        plan: 'FREE',
+        status: 'ACTIVE',
+        limit: 20,
+        userId: user.id,
+      },
+    });
 
     return {
       message: 'User registered successfully',
