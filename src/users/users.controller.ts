@@ -4,6 +4,8 @@ import { JwtGuard } from '../auth/guards/jwt.guard';
 import { Body, Patch, Delete } from '@nestjs/common';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { Roles } from '../common/decorators/roles.decorator';
+import { RolesGuard } from '../common/guards/roles.guard';
 
 @Controller('users')
 export class UsersController {
@@ -32,5 +34,13 @@ export class UsersController {
   @UseGuards(JwtGuard)
   deleteAccount(@Req() req: any) {
     return this.usersService.deleteAccount(req.user.userId);
+  }
+  @Get('admin-test')
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles('ADMIN')
+  adminTest() {
+    return {
+      message: 'Welcome Admin',
+    };
   }
 }
